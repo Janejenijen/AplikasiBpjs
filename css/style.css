@@ -1,0 +1,145 @@
+/* General styles */
+body {
+    background: linear-gradient(to bottom, #00a652, #0076a1);
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Bubble styles */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(126.32deg, #0D5081 -36.79%, #0B8E60 114.41%);
+    border: 1px solid #FFFFFF03;
+    backdrop-filter: blur(4px);
+}
+
+.bubble1 {
+    top: 195px;
+    left: 104px;
+    width: 90px;
+    height: 97px;
+    background: linear-gradient(65.71deg, #0D5081 13.85%, #0B8E60 85.97%);
+}
+
+/* Uncomment and modify these bubbles if necessary */
+/*
+.bubble2, .bubble3, .bubble4, .bubble5 {
+    width: 70px;
+    height: 68px;
+    top: 70px;
+    left: 460px;
+    background: linear-gradient(65.71deg, #0D5081 13.85%, #0B8E60 85.97%);
+    border: 1px solid #FFFFFF03;
+    backdrop-filter: blur(4px);
+}
+*/
+
+/* Login container */
+.login {
+    position: relative;
+    width: 400px;
+    max-width: 90%;
+    height: auto;
+    padding: 20px;
+    margin: 30px 0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header img {
+    background-color: #ffffff;
+    padding: 10px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+label {
+    font-size: 14px;
+    color: #333;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 40px;
+    border: none;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    align-self: center;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005f8a;
+}
+
+/* Footer styles */
+footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .login {
+        width: 90%;
+        padding: 15px;
+    }
+
+    input {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.success-message {
+    color: green;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+

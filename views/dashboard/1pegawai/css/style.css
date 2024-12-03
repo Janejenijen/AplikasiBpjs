@@ -1,0 +1,302 @@
+/* main {background: linear-gradient(to bottom, #00a652, #0076a1);} */
+
+/* Top Bar */
+#top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#top-bar-icons {
+  display: flex;
+  gap: 15px;
+}
+
+#top-bar-icons .icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+#notification-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+#notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ikon notifikasi */
+#notification-popup {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+#notification-popup ul {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+}
+
+#notification-popup li {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#notification-popup li.unread {
+  font-weight: bold;
+  background-color: #f9f9f9;
+}
+
+#notification-popup li:hover {
+  background-color: #f0f0f0;
+}
+
+#user-icon {
+  position: relative;
+  cursor: pointer;
+  margin-right: 50px;
+}
+
+#user-info-popup {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 250px;
+  display: none;
+  z-index: 1000;
+}
+
+#user-info-popup p {
+  margin: 5px 0;
+}
+
+#user-info-popup p strong {
+  font-weight: bold;
+}
+
+#logout-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#logout-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Sidebar */
+img {
+  width: 100%;
+  height: 6%;
+}
+
+aside {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 50px);
+  background-color: #f4f4f4;
+  padding: 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+aside button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+aside button:hover {
+  background-color: #ddd;
+}
+
+/* Main Content */
+main {
+  margin-left: 200px;
+  margin-top: 50px;
+  padding: 20px;
+}
+
+/* Hidden and Active Sections */
+.menu-content {
+  display: none;
+}
+
+.menu-content.active {
+  display: block;
+  border: 1px solid black;
+  margin-right: 250px;
+}
+
+/* Calendar */
+#calendar {
+  width: 200px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 70px;
+  right: 20px;
+}
+
+#calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  text-align: center;
+}
+
+#calendar-days .weekend {
+  color: red;
+}
+
+.today {
+  background-color: #0076a1;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Styling untuk tombol FKTP dan FKTRL */
+#faskes-selection {
+  margin-bottom: 20px;
+}
+
+#faskes-selection button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+}
+
+#faskes-selection button:hover {
+  background-color: #ddd;
+}
+
+/* Daftar Faskes */
+.faskes-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.faskes-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.faskes-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Tabel Form Penilaian */
+.penilaian-form table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.penilaian-form th,
+.penilaian-form td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.penilaian-form th {
+  background-color: #f2f2f2;
+}
+
+/* Styling untuk input number */
+.penilaian-form input[type="number"] {
+  width: 50px;
+  text-align: center;
+}
+
+/* Upload Image di kiri bawah */
+/* #upload-section {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+} 
+
+#file-input {
+  font-size: 16px;
+}
+
+/* Komentar di kanan atas */
+#komentar-section {
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  width: 250px;
+}
+
+#komentar-section textarea {
+  width: 100%;
+  padding: 8px;
+  height: 100px;
+}

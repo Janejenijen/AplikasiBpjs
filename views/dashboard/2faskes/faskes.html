@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* General Styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Top Bar */
+      #top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #fff;
+        color: black;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      #top-bar-icons {
+        display: flex;
+        gap: 15px;
+        margin: 50px;
+      }
+
+      #top-bar-icons .icon {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+
+      /* Sidebar */
+      nav {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 200px;
+        height: calc(100vh - 50px);
+        background-color: #f4f4f4;
+        padding: 10px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+      }
+
+      nav .menu {
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      nav .menu:hover {
+        background-color: #ddd;
+      }
+
+      nav .menu[data-target="dashboard"] {
+        color: #0076a1;
+      }
+
+      nav .menu[data-target="raport"] {
+        color: #00a652;
+      }
+
+      /* Main Content */
+      main {
+        margin-left: 200px;
+        margin-top: 50px;
+        padding: 20px;
+      }
+
+      .menu-content {
+        display: none;
+      }
+
+      .menu-content.active {
+        display: block;
+      }
+
+      /* Notification */
+      .notification {
+        display: flex;
+        align-items: center;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification .icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+
+      .notification p {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      #top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#top-bar-icons {
+  display: flex;
+  gap: 15px;
+}
+
+#top-bar-icons .icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+#user-icon {
+  position: relative;
+  cursor: pointer;
+  margin-right: 50px;
+}
+
+#user-info-popup {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 250px;
+  display: none;
+  z-index: 1000;
+}
+
+#user-info-popup p {
+  margin: 5px 0;
+}
+
+#user-info-popup p strong {
+  font-weight: bold;
+}
+
+#logout-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#logout-button:hover {
+  background-color: #d32f2f;
+}
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header id="top-bar">
+      <span id="welcome-message">Selamat datang, Janehfers</span>
+      <div id="top-bar-icons">
+        <img src="../../../img/user.png" alt="User Icon" class="icon" />
+        <div id="user-info-popup" class="hidden">
+            <p><strong>Nama:</strong> <span id="user-name"></span></p>
+            <p><strong>Role:</strong> <span id="user-role"></span></p>
+            <p>
+              <strong>Waktu Login:</strong> <span id="user-login-time"></span>
+            </p>
+            <button id="logout-button" class="logout-button">Logout</button>
+          </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav>
+      <button class="menu" data-target="dashboard">DASHBOARD</button>
+      <button class="menu" data-target="raport">RAPORT</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="menu-content active">
+        <div class="notification">
+          <img
+            src="../../../img/notification.png"
+            alt="Notification Icon"
+            class="icon"
+          />
+          <p>Selamat siang, hasil penilaian sudah masuk. Silahkan lihat !!</p>
+        </div>
+      </section>
+
+      <!-- Raport Section (optional, for future expansion) -->
+      <section id="raport" class="menu-content">
+        <!-- Future raport content -->
+      </section>
+    </main>
+
+    <script>
+      const userIcon = document.querySelector(".icon");
+        const userInfoPopup = document.getElementById("user-info-popup");
+        const userName = document.getElementById("user-name");
+        const userRole = document.getElementById("user-role");
+        const userLoginTime = document.getElementById("user-login-time");
+
+        // Ambil data pengguna dari backend
+        const fetchUserInfo = async () => {
+          try {
+            const response = await fetch("/api/user-info");
+            if (response.ok) {
+              const data = await response.json();
+              userName.textContent = data.name;
+              userRole.textContent = data.role;
+              userLoginTime.textContent = new Date(
+                data.last_login,
+              ).toLocaleString();
+            } else {
+              userName.textContent = "Tidak ditemukan";
+              userRole.textContent = "-";
+              userLoginTime.textContent = "-";
+            }
+          } catch (error) {
+            console.error("Error fetching user info:", error);
+          }
+        };
+
+        // Tampilkan atau sembunyikan popup saat ikon ditekan
+        userIcon.addEventListener("click", () => {
+          if (userInfoPopup.style.display === "block") {
+            userInfoPopup.style.display = "none";
+          } else {
+            userInfoPopup.style.display = "block";
+            fetchUserInfo(); // Ambil data saat popup ditampilkan
+          }
+        });
+
+        // Logout user
+        const logoutButton = document.getElementById("logout-button");
+        logoutButton.addEventListener("click", async () => {
+          alert("Anda berhasil logout!");
+          window.location.href = "../../../index.html"; // Redirect ke halaman login
+        });
+
+        // Sembunyikan popup saat mengklik di luar area
+        document.addEventListener("click", (e) => {
+          if (
+            !userIcon.contains(e.target) &&
+            !userInfoPopup.contains(e.target)
+          ) {
+            userInfoPopup.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

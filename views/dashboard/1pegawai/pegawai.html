@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Switch Example</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- Top Bar -->
+    <div id="top-bar">
+      <span id="welcome-message">Selamat datang</span>
+      <div id="top-bar-icons">
+        <div id="top-bar-icons">
+          <div id="notification-icon">
+            <img
+              src="../../../img/notification.png"
+              alt="Notification Icon"
+              class="icon"
+            />
+            <span id="notification-badge">3</span>
+          </div>
+        </div>
+        <div id="notification-popup" class="hidden">
+          <!-- Ini adalah kontainer notifikasi -->
+          <ul id="notification-list">
+            <li class="unread">Notifikasi 1 (Belum Dibaca)</li>
+            <li>Notifikasi 2 (Sudah Dibaca)</li>
+            <li>Notifikasi 3 (Sudah Dibaca)</li>
+          </ul>
+        </div>
+
+        <div id="user-icon">
+          <img src="../../../img/user.png" alt="User" class="icon" />
+          <div id="user-info-popup" class="hidden">
+            <p><strong>Nama:</strong> <span id="user-name"></span></p>
+            <p><strong>Role:</strong> <span id="user-role"></span></p>
+            <p>
+              <strong>Waktu Login:</strong> <span id="user-login-time"></span>
+            </p>
+            <button id="logout-button" class="logout-button">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside>
+      <img
+        src="../../../img/BPJS_Kesehatan_logo.png"
+        alt="Logo Badan Penyelenggara Jaminan Sosial Kesehatan"
+      />
+      <button class="menu" data-target="dashboard">Dashboard</button>
+      <button class="menu" data-target="kunjungan">Kunjungan</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="menu-content active">
+        <h1>Jadwal Kunjungan</h1>
+        <div id="calendar">
+          <div id="calendar-header">
+            <button id="prev-month">&lt;</button>
+            <span id="current-month-year"></span>
+            <button id="next-month">&gt;</button>
+          </div>
+          <div id="calendar-days"></div>
+        </div>
+      </section>
+
+      <!-- Kunjungan Section -->
+      <section id="kunjungan" class="menu-content">
+        <h1>Faskes</h1>
+
+        <!-- Pilihan FKTP atau FKTRL -->
+        <div id="faskes-selection">
+          <button id="fktp-button">FKTP</button>
+          <button id="fktrl-button">FKTRL</button>
+        </div>
+
+        <!-- Input Pencarian -->
+        <input type="text" id="search-input" placeholder="Cari Faskes..." />
+
+        <!-- Daftar Faskes akan muncul di sini -->
+        <div id="faskes-list" class="faskes-list"></div>
+
+        <!-- Form Penilaian (di sini kita sembunyikan dulu) -->
+        <div id="penilaian-form" class="penilaian-form" style="display: none">
+          <h2>Form Penilaian</h2>
+          <form id="form-penilaian">
+            <!-- Tabel Form Penilaian -->
+            <table>
+              <thead>
+                <tr>
+                  <th>Indikator</th>
+                  <th>Rating (1-5)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Kualitas</td>
+                  <td>
+                    <input type="number" name="kualitas" min="1" max="5" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Rasa</td>
+                  <td><input type="number" name="rasa" min="1" max="5" /></td>
+                </tr>
+                <tr>
+                  <td>Kenyamanan</td>
+                  <td>
+                    <input type="number" name="kenyamanan" min="1" max="5" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kecepatan</td>
+                  <td>
+                    <input type="number" name="kecepatan" min="1" max="5" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Keterjangkauan</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="keterjangkauan"
+                      min="1"
+                      max="5"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button type="submit" id="submit-penilaian">Kirim Penilaian</button>
+          </form>
+        </div>
+
+        <!-- Upload Gambar di kiri bawah
+            <div id="upload-section">
+                <input type="file" id="file-input" accept="image/*">
+            </div> -->
+
+        <!-- Fitur Komentar di kanan atas -->
+        <div id="komentar-section">
+          <h3>Komentar</h3>
+          <textarea
+            id="komentar-text"
+            placeholder="Tulis komentar Anda..."
+          ></textarea
+          ><br />
+          <button id="submit-komentar">Kirim Komentar</button>
+        </div>
+
+        <!-- Tombol untuk submit form penilaian -->
+        <button id="upload-penilaian-button" style="display: none">
+          Upload Form Penilaian
+        </button>
+      </section>
+    </main>
+
+    <script>
+      // Navigasi Menu
+      const buttons = document.querySelectorAll(".menu");
+      const contents = document.querySelectorAll(".menu-content");
+
+      // Event Listener untuk navigasi menu
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = button.getAttribute("data-target");
+
+          // Nonaktifkan semua konten
+          contents.forEach((content) => content.classList.remove("active"));
+
+          // Aktifkan konten yang dipilih
+          document.getElementById(target).classList.add("active");
+        });
+      });
+
+      // Notifikasi
+      document.addEventListener("DOMContentLoaded", () => {
+        const notificationIcon = document.getElementById("notification-icon");
+        const notificationPopup = document.getElementById("notification-popup");
+        const notificationBadge = document.getElementById("notification-badge");
+        const notificationList = document.getElementById("notification-list");
+
+        let unreadCount = 3; // Jumlah notifikasi belum dibaca (contoh)
+
+        // Tampilkan atau sembunyikan popup notifikasi
+        notificationIcon.addEventListener("click", () => {
+          notificationPopup.style.display =
+            notificationPopup.style.display === "block" ? "none" : "block";
+        });
+
+        // Tandai semua notifikasi sebagai sudah dibaca saat popup dibuka
+        notificationPopup.addEventListener("click", () => {
+          document
+            .querySelectorAll("#notification-list li.unread")
+            .forEach((item) => {
+              item.classList.remove("unread");
+            });
+          unreadCount = 0;
+          notificationBadge.style.display = "none";
+        });
+
+        // Perbarui tanda jumlah notifikasi
+        if (unreadCount > 0) {
+          notificationBadge.textContent = unreadCount;
+          notificationBadge.style.display = "flex";
+        } else {
+          notificationBadge.style.display = "none";
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (
+          !notificationPopup.contains(e.target) &&
+          !notificationIcon.contains(e.target)
+        ) {
+          notificationPopup.style.display = "none";
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const userIcon = document.getElementById("user-icon");
+        const userInfoPopup = document.getElementById("user-info-popup");
+        const userName = document.getElementById("user-name");
+        const userRole = document.getElementById("user-role");
+        const userLoginTime = document.getElementById("user-login-time");
+
+        // Ambil data pengguna dari backend
+        const fetchUserInfo = async () => {
+          try {
+            const response = await fetch("/api/user-info");
+            if (response.ok) {
+              const data = await response.json();
+              userName.textContent = data.name;
+              userRole.textContent = data.role;
+              userLoginTime.textContent = new Date(
+                data.last_login,
+              ).toLocaleString();
+            } else {
+              userName.textContent = "Tidak ditemukan";
+              userRole.textContent = "-";
+              userLoginTime.textContent = "-";
+            }
+          } catch (error) {
+            console.error("Error fetching user info:", error);
+          }
+        };
+
+        // Tampilkan atau sembunyikan popup saat ikon ditekan
+        userIcon.addEventListener("click", () => {
+          if (userInfoPopup.style.display === "block") {
+            userInfoPopup.style.display = "none";
+          } else {
+            userInfoPopup.style.display = "block";
+            fetchUserInfo(); // Ambil data saat popup ditampilkan
+          }
+        });
+
+        // Logout user
+        const logoutButton = document.getElementById("logout-button");
+        logoutButton.addEventListener("click", async () => {
+          alert("Anda berhasil logout!");
+          window.location.href = "../../../index.html"; // Redirect ke halaman login
+        });
+
+        // Sembunyikan popup saat mengklik di luar area
+        document.addEventListener("click", (e) => {
+          if (
+            !userIcon.contains(e.target) &&
+            !userInfoPopup.contains(e.target)
+          ) {
+            userInfoPopup.style.display = "none";
+          }
+        });
+      });
+
+      // Deklarasi di luar agar tetap konsisten
+      const today = new Date();
+
+      // Kalender
+      const currentMonthYear = document.getElementById("current-month-year");
+      const calendarDays = document.getElementById("calendar-days");
+      let date = new Date();
+
+      function renderCalendar() {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        currentMonthYear.textContent = `${date.toLocaleString("default", { month: "long" })} ${year}`;
+
+        calendarDays.innerHTML = "";
+
+        // Render elemen kosong hingga awal bulan
+        for (let i = 0; i < firstDay; i++) {
+          calendarDays.innerHTML += `<div></div>`;
+        }
+
+        // Render tanggal bulan ini
+
+        for (let i = 1; i <= lastDate; i++) {
+          const day = new Date(year, month, i);
+          const dayDiv = document.createElement("div");
+          dayDiv.textContent = i;
+
+          // Sorotan untuk hari ini
+          if (
+            day.getFullYear() === today.getFullYear() &&
+            day.getMonth() === today.getMonth() &&
+            day.getDate() === today.getDate()
+          ) {
+            dayDiv.classList.add("today"); // Tambahkan kelas untuk hari ini
+          }
+
+          calendarDays.appendChild(dayDiv);
+        }
+      }
+
+      // Navigasi Bulan
+      document.getElementById("prev-month").addEventListener("click", () => {
+        date.setMonth(date.getMonth() - 1);
+        renderCalendar();
+      });
+
+      document.getElementById("next-month").addEventListener("click", () => {
+        date.setMonth(date.getMonth() + 1);
+        renderCalendar();
+      });
+
+      // Render awal kalender
+      renderCalendar();
+
+      // Daftar Faskes untuk FKTP dan FKTRL
+      const fktpList = ["FKTP 1", "FKTP 2", "FKTP 3"];
+      const fktrlList = ["FKTRL 1", "FKTRL 2", "FKTRL 3"];
+
+      // Elemen DOM
+      const faskesListContainer = document.getElementById("faskes-list");
+      const fktpButton = document.getElementById("fktp-button");
+      const fktrlButton = document.getElementById("fktrl-button");
+      const searchInput = document.getElementById("search-input");
+      const penilaianForm = document.getElementById("penilaian-form");
+      const uploadSection = document.getElementById("upload-section");
+      const komentarSection = document.getElementById("komentar-section");
+      const uploadPenilaianButton = document.getElementById(
+        "upload-penilaian-button",
+      );
+
+      // Menampilkan form penilaian setelah memilih faskes
+      function showPenilaianForm(faskes) {
+        penilaianForm.style.display = "block";
+        uploadPenilaianButton.style.display = "inline-block";
+        uploadSection.style.display = "block";
+        komentarSection.style.display = "block";
+
+        // Mengubah nama faskes dalam form (opsional)
+        document.querySelector("#penilaian-form h2").textContent =
+          `Form Penilaian untuk ${faskes}`;
+      }
+
+      // Fungsi untuk menampilkan daftar Faskes
+      function renderFaskesList(list) {
+        faskesListContainer.innerHTML = ""; // Bersihkan daftar sebelumnya
+
+        // Jika tidak ada hasil pencarian, tampilkan pesan
+        if (list.length === 0) {
+          faskesListContainer.innerHTML =
+            "<div>Tidak ada faskes yang ditemukan.</div>";
+          return;
+        }
+
+        // Render daftar faskes
+        list.forEach((faskes) => {
+          const faskesItem = document.createElement("div");
+          faskesItem.classList.add("faskes-item");
+          faskesItem.textContent = faskes;
+
+          // Fungsi untuk memilih faskes
+          faskesItem.addEventListener("click", () => {
+            showPenilaianForm(faskes);
+          });
+
+          faskesListContainer.appendChild(faskesItem);
+        });
+      }
+
+      // Fungsi untuk memfilter faskes berdasarkan pencarian
+      function filterFaskes(searchTerm, faskesList) {
+        return faskesList.filter((faskes) =>
+          faskes.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+      }
+
+      // Event listener untuk memilih FKTP
+      fktpButton.addEventListener("click", () => {
+        const filteredFktpList = filterFaskes(searchInput.value, fktpList);
+        renderFaskesList(filteredFktpList);
+      });
+
+      // Event listener untuk memilih FKTRL
+      fktrlButton.addEventListener("click", () => {
+        const filteredFktrlList = filterFaskes(searchInput.value, fktrlList);
+        renderFaskesList(filteredFktrlList);
+      });
+
+      // Event listener untuk pencarian
+      searchInput.addEventListener("input", () => {
+        const currentSearchTerm = searchInput.value;
+
+        // Menyaring daftar faskes berdasarkan input pencarian
+        if (fktpButton.classList.contains("active")) {
+          const filteredList = filterFaskes(currentSearchTerm, fktpList);
+          renderFaskesList(filteredList);
+        } else if (fktrlButton.classList.contains("active")) {
+          const filteredList = filterFaskes(currentSearchTerm, fktrlList);
+          renderFaskesList(filteredList);
+        }
+      });
+
+      // Event listener untuk submit form penilaian
+      document
+        .getElementById("submit-penilaian")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          alert("Form penilaian telah dikirim!");
+          // Reset form atau melakukan pengiriman data ke server
+        });
+
+      // Event listener untuk submit komentar
+      document
+        .getElementById("submit-komentar")
+        .addEventListener("click", () => {
+          const komentar = document.getElementById("komentar-text").value;
+          alert(`Komentar Anda: ${komentar}`);
+          // Reset komentar setelah dikirim atau kirim komentar ke server
+        });
+
+      // Event listener untuk upload form penilaian
+      uploadPenilaianButton.addEventListener("click", () => {
+        alert("Form penilaian berhasil di-upload!");
+        // Pengolahan upload form ke server
+      });
+
+      // // Event listener untuk upload gambar
+      // document.getElementById('file-input').addEventListener('change', (e) => {
+      //     const file = e.target.files[0];
+      //     if (file) {
+      //         alert(`Gambar ${file.name} telah dipilih.`);
+      //         // Proses upload gambar ke server atau tampilkan gambar preview
+      //     }
+      // });
+    </script>
+  </body>
+</html>
